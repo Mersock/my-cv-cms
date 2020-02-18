@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  my-cv-cms:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: my-cv-cms
+    ports:
+      - '3430:3000'
+    volumes:
+      - /usr/app/node_modules
+      - .:/usr/app/
+    networks:
+      - my-cv-services
+    command: ['npm', 'start']
+
+networks:
+  my-cv-services:
+    external: true
+    driver: bridge
