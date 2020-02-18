@@ -17,7 +17,7 @@ const Footer = props => {
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
-      <Typography variant="body1">&copy; . 2019</Typography>
+      <Typography variant="body1">&copy; 2019</Typography>
       <Typography variant="caption">
         Created with love for the environment. By designers and developers who
         love to work together in offices!
