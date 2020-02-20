@@ -1,10 +1,7 @@
 import axios from 'axios';
+import { UNAUTHENTICATED, AUTHENTICATED, AUTHENTICATION_ERROR } from './type';
 
-export const AUTHENTICATED = 'authenticated_user';
-export const UNAUTHENTICATED = 'unauthenticated_user';
-export const AUTHENTICATION_ERROR = 'authentication_error';
-
-const URL = 'http://localhost:3400';
+const URL = process.env.REACT_APP_BACK_END_URL;
 
 export const signInAction = ({ username, password }, history) => {
   return async dispatch => {
@@ -14,11 +11,18 @@ export const signInAction = ({ username, password }, history) => {
         password
       });
       dispatch({ type: AUTHENTICATED });
-      localStorage.setItem('tokenType', data.tokenType);
       localStorage.setItem('accessToken', data.accessToken);
       history.push('/dashboard');
     } catch (error) {
       dispatch({ type: AUTHENTICATION_ERROR, payload: error });
     }
+  };
+};
+
+export const signOutAction = history => {
+  return dispatch => {
+    dispatch({ type: UNAUTHENTICATED });
+    localStorage.clear();
+    history.push('/sign-in');
   };
 };

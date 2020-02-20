@@ -2,7 +2,7 @@ import {
   AUTHENTICATED,
   AUTHENTICATION_ERROR,
   UNAUTHENTICATED
-} from '../../actions/SignIn';
+} from '../../actions/SignIn/type';
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -11,7 +11,8 @@ export default (state = {}, action) => {
     case UNAUTHENTICATED:
       return { ...state, authenticate: false };
     case AUTHENTICATION_ERROR:
-      return { ...state, error: action.payload };
+      // console.log(action.payload);
+      return { ...state, authenticate: false };
     default:
       return state;
   }
