@@ -19,9 +19,10 @@ export const signInAction = ({ username, password }, history) => {
       });
       dispatch({ type: AUTHENTICATED });
       // console.log(jwtDecode(data.accessToken));
-      localStorage.setItem('accessToken', data.accessToken);
       const userInfo = jwtDecode(data.accessToken);
       dispatch({ type: USERINFO_SAVE, payload: userInfo });
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('userInfo', JSON.stringify(userInfo));
       history.push('/dashboard');
     } catch (error) {
       dispatch({ type: AUTHENTICATION_ERROR, payload: error });
