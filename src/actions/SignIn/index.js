@@ -11,11 +11,11 @@ export const signInAction = ({ username, password }, history) => {
         username,
         password
       });
-      dispatch({ type: AUTHENTICATED });
       // console.log(jwtDecode(data.accessToken));
       const userInfo = jwtDecode(data.accessToken);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      dispatch({ type: AUTHENTICATED,payload: userInfo });
       history.push('/dashboard');
     } catch (error) {
       dispatch({ type: AUTHENTICATION_ERROR, payload: error });

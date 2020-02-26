@@ -4,14 +4,26 @@ import {
   UNAUTHENTICATED
 } from '../../actions/type';
 
-export default (state = {}, action) => {
+const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+const initialState = userInfo ? {authenticate:true,userInfo} :{}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case AUTHENTICATED:
-      return { ...state, authenticate: true };
+      return { 
+        authenticate: true,
+        userInfo:action.payload
+       };
     case UNAUTHENTICATED:
-      return { ...state, authenticate: false };
+      return { 
+        authenticate: false,
+        userInfo:{}
+      };
     case AUTHENTICATION_ERROR:
-      return { ...state, error: action.payload };
+      return {
+        authenticate: false, 
+        error: action.payload 
+      };
     default:
       return state;
   }
