@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
+import { withRouter } from 'react-router-dom';
 
 import { Topbar } from './components';
 
@@ -15,13 +16,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Minimal = props => {
-  const { children } = props;
-
+  const { children, history } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Topbar />
+      <Topbar history={history} />
       <main className={classes.content}>{children}</main>
     </div>
   );
@@ -32,4 +32,4 @@ Minimal.propTypes = {
   className: PropTypes.string
 };
 
-export default Minimal;
+export default withRouter(Minimal);

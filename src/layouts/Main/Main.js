@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 import { Sidebar, Topbar, Footer } from './components';
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { children } = props;
+  const { children, history } = props;
 
   const classes = useStyles();
   const theme = useTheme();
@@ -50,7 +51,7 @@ const Main = props => {
         [classes.shiftContent]: isDesktop
       })}
     >
-      <Topbar onSidebarOpen={handleSidebarOpen} />
+      <Topbar onSidebarOpen={handleSidebarOpen} history={history} />
       <Sidebar
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
@@ -68,4 +69,4 @@ Main.propTypes = {
   children: PropTypes.node
 };
 
-export default Main;
+export default withRouter(Main);

@@ -7,6 +7,8 @@ import { AppBar, Toolbar, Badge, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
+import { connect } from 'react-redux';
+import { signOutAction } from '../../../../actions/SignIn';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,11 +23,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Topbar = props => {
-  const { className, onSidebarOpen, ...rest } = props;
+  const { history, signOutAction, className, onSidebarOpen, ...rest } = props;
 
   const classes = useStyles();
-
   const [notifications] = useState([]);
+
+  const handleSignOut = history => {
+    signOutAction(history);
+  };
 
   return (
     <AppBar {...rest} className={clsx(classes.root, className)}>
@@ -44,7 +49,11 @@ const Topbar = props => {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton className={classes.signOutButton} color="inherit">
+          <IconButton
+            className={classes.signOutButton}
+            color="inherit"
+            onClick={() => handleSignOut(history)}
+          >
             <InputIcon />
           </IconButton>
         </Hidden>
@@ -63,4 +72,4 @@ Topbar.propTypes = {
   onSidebarOpen: PropTypes.func
 };
 
-export default Topbar;
+export default connect(null, { signOutAction })(Topbar);
