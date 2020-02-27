@@ -1,14 +1,15 @@
-import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
+import React from "react";
+import { Switch, Redirect } from "react-router-dom";
 
-import { PublicRoute, PrivateRoute } from './components';
-import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
+import { PublicRoute, PrivateRoute } from "./components";
+import { Main as MainLayout, Minimal as MinimalLayout } from "./layouts";
 
 import {
   Dashboard as DashboardView,
   NotFound as NotFoundView,
-  SignIn as SignInView
-} from './views';
+  SignIn as SignInView,
+  Posts as PostsView
+} from "./views";
 
 const Routes = () => {
   return (
@@ -25,6 +26,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/dashboard"
+      />
+      <PrivateRoute
+        component={PostsView}
+        exact
+        layout={MainLayout}
+        path="/posts"
       />
       <PublicRoute
         component={NotFoundView}
