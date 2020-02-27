@@ -8,7 +8,8 @@ import {
   Dashboard as DashboardView,
   NotFound as NotFoundView,
   SignIn as SignInView,
-  Posts as PostsView
+  PostsList as PostsView,
+  PostsCreate as PostsCreate
 } from "./views";
 
 const Routes = () => {
@@ -32,6 +33,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/posts"
+      />
+      <PrivateRoute
+        component={PostsCreate}
+        exact
+        layout={MainLayout}
+        path="/posts/create"
       />
       <PublicRoute
         component={NotFoundView}

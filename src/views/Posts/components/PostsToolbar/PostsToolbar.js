@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 
 import { SearchInput } from 'components';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -30,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 const PostsToolbar = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
 
   return (
@@ -42,12 +42,14 @@ const PostsToolbar = props => {
         <span className={classes.spacer} />
         <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button>
+        <Link to="/posts/create"> 
         <Button
           color="primary"
           variant="contained"
         >
           Add Posts
         </Button>
+        </Link>
       </div>
       <div className={classes.row}>
         <SearchInput
