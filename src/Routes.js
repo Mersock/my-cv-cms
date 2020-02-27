@@ -9,7 +9,7 @@ import {
   NotFound as NotFoundView,
   SignIn as SignInView,
   PostsList as PostsView,
-  PostsCreate as PostsCreate
+  PostsCreate
 } from "./views";
 
 const Routes = () => {
