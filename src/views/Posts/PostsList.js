@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostsToolbar, PostsTable } from './components';
 import { getPosts } from '../../actions/Posts';
-import mockData from './data';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,29 +13,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PostsList = props => {
-  const { getPosts } = props;
+const PostsList = () => {
+  const posts = useSelector(state => state.posts);
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    getPosts();
-    return () => {};
-  }, [getPosts]);
+    dispatch(getPosts());
+  }, [dispatch]);
 
-  const [users] = useState(mockData);
-  console.log(users);
   return (
     <div className={classes.root}>
       <PostsToolbar />
       <div className={classes.content}>
-        <PostsTable users={users} />
+        <PostsTable posts={posts} />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = state => ({
-  aa: 'xx'
-});
-
-export default connect(mapStateToProps, { getPosts })(PostsList);
+export default PostsList;
