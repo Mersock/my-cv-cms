@@ -163,7 +163,12 @@ const Form = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="outlined">
+          <Button
+            color="primary"
+            variant="outlined"
+            disabled={!formState.isValid}
+            type="submit"
+          >
             Save
           </Button>
         </CardActions>
