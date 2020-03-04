@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -13,6 +13,9 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,6 +33,8 @@ const Form = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -68,22 +73,11 @@ const Form = props => {
             />
           </div>
           <div>
-            <TextField
-              id="body"
-              label="Body"
-              style={{ margin: 5 }}
-              placeholder="Please specify Body"
-              helperText="Full width!!!!!"
-              fullWidth
-              multiline
-              margin="normal"
-              InputLabelProps={{
-                shrink: true
-              }}
-              rows={5}
-              rowsMax={15}
-              variant="outlined"
-            ></TextField>
+            <Editor
+              editorState={editorState}
+              wrapperClassName="demo-wrapper"
+              editorClassName="demo-editor"
+            />
           </div>
         </CardContent>
         <Divider />
