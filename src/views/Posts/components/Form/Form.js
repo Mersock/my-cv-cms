@@ -16,6 +16,7 @@ import {
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../../../../assets/css/wysiwyg/style.css';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
@@ -157,6 +158,9 @@ const Form = props => {
               onEditorStateChange={editorState =>
                 onEditorStateChange(editorState)
               }
+              toolbarClassName="rdw-storybook-toolbar"
+              wrapperClassName="rdw-storybook-wrapper"
+              editorClassName="rdw-storybook-editor"
             />
           </div>
           <div>{draftToHtml(convertToRaw(blogText.getCurrentContent()))}</div>
