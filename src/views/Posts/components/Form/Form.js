@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import validate from "validate.js";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
+import React, { useState, useEffect } from 'react';
+import validate from 'validate.js';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/styles';
 import {
   CardHeader,
   Divider,
@@ -11,13 +11,13 @@ import {
   Button,
   Grid,
   Paper
-} from "@material-ui/core";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import "../Form/css/style.css";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
+} from '@material-ui/core';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertToRaw } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import '../Form/css/style.css';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,26 +33,26 @@ const useStyles = makeStyles(theme => ({
   },
   paperCenter: {
     padding: theme.spacing(2),
-    textAlign: "center",
+    textAlign: 'center',
     color: theme.palette.text.secondary
   },
   paperLeft: {
     padding: theme.spacing(2),
-    textAlign: "left",
+    textAlign: 'left',
     color: theme.palette.text.secondary
   }
 }));
 
 const schema = {
   slug: {
-    presence: { allowEmpty: false, message: "is required" },
+    presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 4,
       minimum: 4
     }
   },
   title: {
-    presence: { allowEmpty: false, message: "is required" },
+    presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 128,
       minimum: 6
@@ -90,7 +90,7 @@ const Form = props => {
       values: {
         ...formState.values,
         [event.target.name]:
-          event.target.type === "checkbox"
+          event.target.type === 'checkbox'
             ? event.target.checked
             : event.target.value
       },
@@ -108,6 +108,7 @@ const Form = props => {
   };
 
   const handleSubmit = event => {
+    formState.values.body = draftToHtml(convertToRaw(body.getCurrentContent()));
     console.log(formState.values);
     event.preventDefault();
   };
@@ -119,8 +120,8 @@ const Form = props => {
     <div {...rest} className={clsx(classes.root, className)}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-        <form onSubmit={event => handleSubmit(event)}>
-          <Paper className={classes.paperCenter}>
+          <form onSubmit={event => handleSubmit(event)}>
+            <Paper className={classes.paperCenter}>
               <CardHeader subheader="Create your posts" title="Posts" />
               <Divider />
               <div>
@@ -134,14 +135,14 @@ const Form = props => {
                     shrink: true
                   }}
                   className={classes.formField}
-                  error={hasError("slug")}
+                  error={hasError('slug')}
                   helperText={
-                    hasError("slug") ? formState.errors.slug[0] : null
+                    hasError('slug') ? formState.errors.slug[0] : null
                   }
                   onChange={handleChange}
                   type="text"
                   name="slug"
-                  value={formState.values.slug || ""}
+                  value={formState.values.slug || ''}
                   variant="outlined"
                 />
               </div>
@@ -156,14 +157,14 @@ const Form = props => {
                     shrink: true
                   }}
                   className={classes.formField}
-                  error={hasError("title")}
+                  error={hasError('title')}
                   helperText={
-                    hasError("title") ? formState.errors.title[0] : null
+                    hasError('title') ? formState.errors.title[0] : null
                   }
                   onChange={handleChange}
                   type="text"
                   name="title"
-                  value={formState.values.title || ""}
+                  value={formState.values.title || ''}
                   variant="outlined"
                 />
               </div>
@@ -183,18 +184,18 @@ const Form = props => {
               </div>
               */}
               <Divider />
-          </Paper>
-          <Paper className={classes.paperLeft}>
-            <Button
-              color="primary"
-              disabled={!formState.isValid}
-              fullWidth
-              type="submit"
-              variant="contained"
-            >
-              Submit
-            </Button>
-          </Paper>
+            </Paper>
+            <Paper className={classes.paperLeft}>
+              <Button
+                color="primary"
+                disabled={!formState.isValid}
+                fullWidth
+                type="submit"
+                variant="contained"
+              >
+                Submit
+              </Button>
+            </Paper>
           </form>
         </Grid>
       </Grid>
