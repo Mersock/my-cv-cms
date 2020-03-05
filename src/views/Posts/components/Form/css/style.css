@@ -9,6 +9,7 @@
   padding: 5px;
   border-radius: 2px;
   height: 200px;
+  color: #000000;
 }
 .rdw-storybook-toolbar {
   top: -130px;
@@ -20,3 +21,12 @@
   border: 1px solid #f1f1f1;
   height: 100px;
 }
+
+.rdw-storybook-editor:hover{
+  border: 1px solid #546e7a;
+}
+
+.rdw-storybook-toolbar:hover{
+  border: 1px solid #546e7a;
+}
+
