@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import validate from 'validate.js';
-import { makeStyles } from '@material-ui/styles';
-import { Grid, Button, TextField, Link, Typography } from '@material-ui/core';
-import { signInAction } from '../../actions/SignIn';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { Link as RouterLink, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import validate from "validate.js";
+import { makeStyles } from "@material-ui/styles";
+import { Grid, Button, TextField, Link, Typography } from "@material-ui/core";
+import { signInAction } from "../../actions/SignIn";
+import { connect } from "react-redux";
 
 const schema = {
   username: {
-    presence: { allowEmpty: false, message: 'is required' },
+    presence: { allowEmpty: false, message: "is required" },
     length: {
       maximum: 64,
       minimum: 4
     }
   },
   password: {
-    presence: { allowEmpty: false, message: 'is required' },
+    presence: { allowEmpty: false, message: "is required" },
     length: {
       maximum: 128,
       minimum: 6
@@ -27,30 +27,30 @@ const schema = {
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    height: '100%'
+    height: "100%"
   },
   grid: {
-    height: '100%'
+    height: "100%"
   },
   quoteContainer: {
-    [theme.breakpoints.down('md')]: {
-      display: 'none'
+    [theme.breakpoints.down("md")]: {
+      display: "none"
     }
   },
   quote: {
     backgroundColor: theme.palette.neutral,
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: 'url(/images/auth.jpg)',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center'
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundImage: "url(/images/auth.jpg)",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center"
   },
   quoteInner: {
-    textAlign: 'center',
-    flexBasis: '600px'
+    textAlign: "center",
+    flexBasis: "600px"
   },
   quoteText: {
     color: theme.palette.white,
@@ -65,13 +65,13 @@ const useStyles = makeStyles(theme => ({
   },
   contentContainer: {},
   content: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
+    height: "100%",
+    display: "flex",
+    flexDirection: "column"
   },
   contentHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     paddingTop: theme.spacing(5),
     paddingBototm: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -82,10 +82,10 @@ const useStyles = makeStyles(theme => ({
   },
   contentBody: {
     flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "center"
     }
   },
   form: {
@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     paddingRight: 100,
     paddingBottom: 125,
     flexBasis: 700,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(2)
     }
@@ -119,7 +119,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-  const { history } = props;
+  const { history, authenticate } = props;
+
+  if(authenticate){
+    history.push('/dashboard')
+  }
 
   const classes = useStyles();
 
@@ -148,7 +152,7 @@ const SignIn = props => {
       values: {
         ...formState.values,
         [event.target.name]:
-          event.target.type === 'checkbox'
+          event.target.type === "checkbox"
             ? event.target.checked
             : event.target.value
       },
@@ -189,35 +193,35 @@ const SignIn = props => {
                     Username Or Password Invalid.
                   </Typography>
                 ) : (
-                  ''
+                  ""
                 )}
 
                 <TextField
                   className={classes.textField}
-                  error={hasError('username')}
+                  error={hasError("username")}
                   fullWidth
                   helperText={
-                    hasError('username') ? formState.errors.username[0] : null
+                    hasError("username") ? formState.errors.username[0] : null
                   }
                   label="Username"
                   name="username"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.username || ''}
+                  value={formState.values.username || ""}
                   variant="outlined"
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('password')}
+                  error={hasError("password")}
                   fullWidth
                   helperText={
-                    hasError('password') ? formState.errors.password[0] : null
+                    hasError("password") ? formState.errors.password[0] : null
                   }
                   label="Password"
                   name="password"
                   onChange={handleChange}
                   type="password"
-                  value={formState.values.password || ''}
+                  value={formState.values.password || ""}
                   variant="outlined"
                 />
                 <Button
@@ -232,7 +236,7 @@ const SignIn = props => {
                   Sign in now
                 </Button>
                 <Typography color="textSecondary" variant="body1">
-                  Don't have an account?{' '}
+                  Don't have an account?{" "}
                   <Link component={RouterLink} to="/sign-up" variant="h6">
                     Sign up
                   </Link>
@@ -252,7 +256,8 @@ SignIn.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  errorMessage: state.auth.error
+  errorMessage: state.auth.error,
+  authenticate: state.auth.authenticate
 });
 
 export default connect(mapStateToProps, { signInAction })(withRouter(SignIn));
