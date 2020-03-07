@@ -46,16 +46,16 @@ const useStyles = makeStyles(theme => ({
 const schema = {
   slug: {
     presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 4,
-      minimum: 4
+    format: {
+      pattern: /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/,
+      message: 'is invalid'
     }
   },
   title: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
-      maximum: 128,
-      minimum: 6
+      maximum: 1000,
+      minimum: 1
     }
   }
 };
