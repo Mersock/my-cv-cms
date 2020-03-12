@@ -88,7 +88,6 @@ const Form = props => {
   });
 
   const posts = useSelector(state => state.posts.errors);
-  console.log(posts);
   useEffect(() => {
     const errors = validate(formState.values, schema);
 

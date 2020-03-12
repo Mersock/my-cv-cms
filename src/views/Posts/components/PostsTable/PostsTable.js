@@ -102,7 +102,7 @@ const PostsTable = props => {
                           {post.title}
                         </div>
                       </TableCell>
-                      <TableCell>{post.body}</TableCell>
+                      <TableCell><span dangerouslySetInnerHTML={{__html: post.body.slice(0,100)}} /></TableCell>
                       <TableCell>{post.slug}</TableCell>
                       <TableCell>
                         {moment(post.createdAt).format('DD/MM/YYYY')}

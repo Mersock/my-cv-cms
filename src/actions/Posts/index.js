@@ -26,7 +26,10 @@ export const getPosts = (params = {}) => {
 export const createPosts = (params = {}, file = {}) => {
   return async dispatch => {
     try {
-      const fileData = await uploadFile(file);
+      if(file){
+        const fileData = await uploadFile(file)
+        params.imagesUrl = fileData.data.imagesPath
+      }
       const { id } = JSON.parse(user);
       params.author = id;
       const { data } = await axios.post(`${URL}/v1/posts`, params, {
