@@ -14,6 +14,10 @@ import {
   Paper,
   CircularProgress
 } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -74,7 +78,7 @@ const schema = {
 };
 
 const Form = props => {
-  const { eventPosts, className, ...rest } = props;
+  const { history, eventPosts, className, ...rest } = props;
 
   const classes = useStyles();
 
@@ -87,7 +91,14 @@ const Form = props => {
     errors: {}
   });
 
-  const posts = useSelector(state => state.posts.errors);
+  const propPosts = useSelector(state => state.posts);
+  const [posts, setPosts] = useState({});
+  const [apisError, setApisError] = useState('');
+
+  if (posts.create) {
+    history.push('/posts');
+  }
+
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -96,7 +107,15 @@ const Form = props => {
       isValid: errors ? false : true,
       errors: errors || {}
     }));
-  }, [formState.values]);
+
+    setPosts(propPosts);
+
+    if (posts.errors) {
+      Object.keys(posts.errors).map(function(key, index) {
+        setApisError(posts.errors[key][index]);
+      });
+    }
+  }, [formState.values, posts.errors, propPosts]);
 
   const handleChange = event => {
     event.persist();
@@ -124,6 +143,7 @@ const Form = props => {
   const [body, setBobdy] = useState(EditorState.createEmpty());
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
+  const [ErrorOpen, setErrorOpen] = useState(false);
 
   const onEditorStateChange = editorState => {
     setBobdy(editorState);
@@ -144,6 +164,30 @@ const Form = props => {
     <div {...rest} className={clsx(classes.root, className)}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
+          {posts.errors ? (
+            <Collapse in={ErrorOpen}>
+              <Alert
+                severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setErrorOpen(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+              >
+                <AlertTitle>Error</AlertTitle>
+                {apisError}
+              </Alert>
+            </Collapse>
+          ) : (
+            ''
+          )}
           <form onSubmit={event => handleSubmit(event)}>
             <Paper className={classes.paperCenter}>
               <CardHeader subheader="Create your posts" title="Posts" />

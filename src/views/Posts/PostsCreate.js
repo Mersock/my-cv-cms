@@ -10,14 +10,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PostsCreate = () => {
+const PostsCreate = props => {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item md={12} xs={12}>
-          <Form eventPosts={createPosts} />
+          <Form eventPosts={createPosts} history={props.history} />
         </Grid>
       </Grid>
     </div>
