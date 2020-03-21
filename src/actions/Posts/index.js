@@ -26,10 +26,6 @@ export const getPosts = (params = {}) => {
 export const createPosts = (params = {}, file = {}) => {
   return async dispatch => {
     try {
-      if (file) {
-        const fileData = await uploadFile(file);
-        params.imagesUrl = fileData.data.imagesPath;
-      }
       const { id } = JSON.parse(user);
       params.author = id;
       const { data } = await axios.post(`${URL}/v1/posts`, params, {
@@ -38,9 +34,22 @@ export const createPosts = (params = {}, file = {}) => {
           Authorization: `Beare ${token}`
         }
       });
+      if (file && data.data.id) {
+        const fileData = await uploadFile(file);
+        params.imagesUrl = fileData.data.imagesPath;
+        axios.patch(`${URL}/v1/posts/${data.data.id}`, params, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Beare ${token}`
+          }
+        });
+      }
       dispatch({ type: CREATE_POSTS, payload: data });
     } catch (error) {
-      dispatch({ type: ERROR_POSTS, payload: error.response.data.errors });
+      dispatch({
+        type: ERROR_POSTS,
+        payload: error.response.data.errors.errors
+      });
     }
   };
 };
