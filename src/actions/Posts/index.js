@@ -26,12 +26,13 @@ export const getPosts = (params = {}) => {
 export const createPosts = (params = {}, file = {}) => {
   return async dispatch => {
     try {
-      if(file){
-        const fileData = await uploadFile(file)
-        params.imagesUrl = fileData.data.imagesPath
+      if (file) {
+        const fileData = await uploadFile(file);
+        params.imagesUrl = fileData.data.imagesPath;
       }
       const { id } = JSON.parse(user);
       params.author = id;
+      console.log(params);
       const { data } = await axios.post(`${URL}/v1/posts`, params, {
         headers: {
           'Content-Type': 'application/json',

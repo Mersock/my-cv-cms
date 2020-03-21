@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { getPosts } from '../../../../actions/Posts';
+import { substrWithTags } from '../../../../helpers';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -102,7 +103,13 @@ const PostsTable = props => {
                           {post.title}
                         </div>
                       </TableCell>
-                      <TableCell><span dangerouslySetInnerHTML={{__html: post.body.slice(0,100)}} /></TableCell>
+                      <TableCell>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: substrWithTags(post.body, 200)
+                          }}
+                        />
+                      </TableCell>
                       <TableCell>{post.slug}</TableCell>
                       <TableCell>
                         {moment(post.createdAt).format('DD/MM/YYYY')}

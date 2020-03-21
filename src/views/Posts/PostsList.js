@@ -19,7 +19,10 @@ const PostsList = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getPosts());
+    const params ={
+      sortType:'desc'
+    }
+    dispatch(getPosts(params));
   }, [dispatch]);
 
   return (
