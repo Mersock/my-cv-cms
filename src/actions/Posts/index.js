@@ -32,7 +32,6 @@ export const createPosts = (params = {}, file = {}) => {
       }
       const { id } = JSON.parse(user);
       params.author = id;
-      console.log(params);
       const { data } = await axios.post(`${URL}/v1/posts`, params, {
         headers: {
           'Content-Type': 'application/json',
