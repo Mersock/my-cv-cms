@@ -3,11 +3,11 @@ export function substrWithTags(string, len) {
     closeTag = 0,
     i = 0;
   for (i; i < len; i++) {
-    if (string[i] == '<') openTag++;
-    if (string[i] == '>') closeTag++;
+    if (string[i] === '<') openTag++;
+    if (string[i] === '>') closeTag++;
   }
   if (openTag > closeTag) {
-    while (string[i] != '>') i++;
+    while (string[i] !== '>') i++;
   }
 
   return string.substring(0, i + 1);
