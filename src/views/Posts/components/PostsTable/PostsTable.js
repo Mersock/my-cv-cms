@@ -18,7 +18,7 @@ import {
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getPosts } from '../../../../actions/Posts';
+import { getPosts, deletePosts } from '../../../../actions/Posts';
 import { substrWithTags } from '../../../../helpers';
 
 const useStyles = makeStyles(theme => ({
@@ -67,6 +67,11 @@ const PostsTable = props => {
   const handleRowsPerPageChange = event => {
     dispatch(getPosts({ limit: event.target.value }));
     setRowsPerPage(event.target.value);
+  };
+
+  const handleDeletePosts = async id => {
+    await dispatch(deletePosts(id));
+    await dispatch(getPosts({ page, limit: rowsPerPage }));
   };
 
   useEffect(() => {
@@ -124,7 +129,11 @@ const PostsTable = props => {
                           </Button>
                         </Link>
                         {` `}
-                        <Button color="secondary" variant="contained">
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => handleDeletePosts(post.id)}
+                        >
                           Delete
                         </Button>
                       </TableCell>

@@ -3,7 +3,8 @@ import {
   CREATE_POSTS,
   ERROR_POSTS,
   GET_BY_ID,
-  UPDATE_POSTS
+  UPDATE_POSTS,
+  DELETE_POSTS
 } from '../../actions/type';
 
 const initailState = {
@@ -33,6 +34,11 @@ export default (state = initailState, action) => {
       return {
         ...state,
         update: action.payload
+      };
+    case DELETE_POSTS:
+      return {
+        ...state,
+        delete: action.payload
       };
     case ERROR_POSTS:
       return {

@@ -4,7 +4,8 @@ import {
   ERROR_POSTS,
   CREATE_POSTS,
   GET_BY_ID,
-  UPDATE_POSTS
+  UPDATE_POSTS,
+  DELETE_POSTS
 } from '../type';
 import { uploadFile } from '../../helpers';
 
@@ -103,6 +104,22 @@ export const updatePosts = (params = {}, file = {}, postId) => {
         type: ERROR_POSTS,
         payload: error.response.data.errors.errors
       });
+    }
+  };
+};
+
+export const deletePosts = id => {
+  return async dispatch => {
+    try {
+      const { data } = await axios.delete(`${URL}/v1/posts/${id}`, {
+        headers: {
+          Authorization: `Beare ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      dispatch({ type: DELETE_POSTS, payload: data.data });
+    } catch (error) {
+      dispatch({ type: ERROR_POSTS, payload: error });
     }
   };
 };
