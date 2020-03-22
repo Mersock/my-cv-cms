@@ -32,7 +32,7 @@ export default (state = initailState, action) => {
     case UPDATE_POSTS:
       return {
         ...state,
-        detail: action.payload
+        update: action.payload
       };
     case ERROR_POSTS:
       return {

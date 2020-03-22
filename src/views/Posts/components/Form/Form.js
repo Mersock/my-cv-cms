@@ -8,7 +8,6 @@ import {
   CardHeader,
   Divider,
   TextField,
-  Typography,
   Button,
   Grid,
   Paper,
@@ -16,11 +15,15 @@ import {
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw } from 'draft-js';
+import {
+  EditorState,
+  convertToRaw,
+  convertFromHTML,
+  ContentState
+} from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../Form/css/style.css';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -94,8 +97,11 @@ const Form = props => {
     title: '',
     body: ''
   });
+  const [body, setBobdy] = useState(EditorState.createEmpty());
+  const [file, setFile] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  if (posts.create) {
+  if (posts.create || posts.update) {
     history.push('/posts');
   }
 
@@ -108,16 +114,23 @@ const Form = props => {
       errors: errors || {}
     }));
 
-    if (posts.detail) {
+    if (posts.detail && Object.keys(formState.touched).length === 0) {
       setDetail(posts.detail);
+      setBobdy(
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(convertFromHTML(posts.detail.body))
+        )
+      );
+      formState.values.slug = posts.detail.slug;
+      formState.values.title = posts.detail.title;
     }
 
     if (posts.errors) {
-      Object.keys(posts.errors).map(function(key, index) {
-        setApisError(posts.errors[key][index]);
+      Object.keys(posts.errors).forEach(function(key, index) {
+        setApisError(`${key} ${posts.errors[key][index]}`);
       });
     }
-  }, [formState.values, posts.detail, posts.errors]);
+  }, [formState.touched, formState.values, posts.detail, posts.errors]);
 
   const handleChange = event => {
     event.persist();
@@ -142,10 +155,6 @@ const Form = props => {
     }
   };
 
-  const [body, setBobdy] = useState(EditorState.createEmpty());
-  const [file, setFile] = useState('');
-  const [loading, setLoading] = useState(false);
-
   const onEditorStateChange = editorState => {
     setBobdy(editorState);
   };
@@ -154,12 +163,13 @@ const Form = props => {
     event.preventDefault();
     setLoading(true);
     formState.values.body = draftToHtml(convertToRaw(body.getCurrentContent()));
-    await dispatch(eventPosts(formState.values, file));
+    await dispatch(eventPosts(formState.values, file, detail.id || null));
     setLoading(false);
   };
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
+
   return (
     <div {...rest} className={clsx(classes.root, className)}>
       <Grid container spacing={3}>
@@ -194,7 +204,7 @@ const Form = props => {
                   onChange={handleChange}
                   type="text"
                   name="slug"
-                  value={formState.values.slug || detail.slug}
+                  value={formState.values.slug || ''}
                   variant="outlined"
                 />
               </label>
@@ -216,7 +226,7 @@ const Form = props => {
                   onChange={handleChange}
                   type="text"
                   name="title"
-                  value={formState.values.title || detail.title}
+                  value={formState.values.title || ''}
                   variant="outlined"
                 />
               </label>
@@ -247,16 +257,12 @@ const Form = props => {
                   onEditorStateChange={editorState =>
                     onEditorStateChange(editorState)
                   }
+                  editorState={body}
                   toolbarClassName="rdw-storybook-toolbar"
                   wrapperClassName="rdw-storybook-wrapper"
                   editorClassName="rdw-storybook-editor"
                 />
               </div>
-              {/*
-              <div>
-                {draftToHtml(convertToRaw(body.getCurrentContent()))}
-              </div>
-              */}
               <Divider />
             </Paper>
             <Paper className={classes.paperCenter}>
@@ -265,7 +271,7 @@ const Form = props => {
               ) : (
                 <Button
                   color="primary"
-                  disabled={!formState.isValid}
+                  disabled={posts.detail ? false : !formState.isValid}
                   fullWidth
                   type="submit"
                   variant="contained"
