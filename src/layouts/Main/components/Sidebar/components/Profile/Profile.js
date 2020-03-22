@@ -25,26 +25,18 @@ const Profile = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-
+  const getUser = JSON.parse(localStorage.getItem('userInfo'));
   const user = {
-    name: 'Shen Zhi',
+    name: getUser.username,
     avatar: '/images/avatars/avatar_11.png',
     bio: 'Brain Director'
   };
-
   return (
     <div {...rest} className={clsx(classes.root, className)}>
-      <Avatar
-        alt="Person"
-        className={classes.avatar}
-        component={RouterLink}
-        src={user.avatar}
-        to="/"
-      />
+      <Typography variant="body2">Welcome</Typography>
       <Typography className={classes.name} variant="h4">
         {user.name}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
     </div>
   );
 };
