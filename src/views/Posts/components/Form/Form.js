@@ -15,9 +15,6 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import Collapse from '@material-ui/core/Collapse';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -143,7 +140,6 @@ const Form = props => {
   const [body, setBobdy] = useState(EditorState.createEmpty());
   const [file, setFile] = useState('');
   const [loading, setLoading] = useState(false);
-  const [ErrorOpen, setErrorOpen] = useState(false);
 
   const onEditorStateChange = editorState => {
     setBobdy(editorState);
@@ -165,26 +161,10 @@ const Form = props => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           {posts.errors ? (
-            <Collapse in={ErrorOpen}>
-              <Alert
-                severity="error"
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setErrorOpen(false);
-                    }}
-                  >
-                    <CloseIcon fontSize="inherit" />
-                  </IconButton>
-                }
-              >
-                <AlertTitle>Error</AlertTitle>
-                {apisError}
-              </Alert>
-            </Collapse>
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {apisError}
+            </Alert>
           ) : (
             ''
           )}

@@ -1,4 +1,9 @@
-import { GET_POSTS, CREATE_POSTS, ERROR_POSTS } from '../../actions/type';
+import {
+  GET_POSTS,
+  CREATE_POSTS,
+  ERROR_POSTS,
+  GET_BY_ID
+} from '../../actions/type';
 
 const initailState = {
   data: [],
@@ -17,6 +22,11 @@ export default (state = initailState, action) => {
       return {
         ...state,
         create: action.payload
+      };
+    case GET_BY_ID:
+      return {
+        ...state,
+        detail: action.payload
       };
     case ERROR_POSTS:
       return {

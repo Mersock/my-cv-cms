@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_POSTS, ERROR_POSTS, CREATE_POSTS } from '../type';
+import { GET_POSTS, ERROR_POSTS, CREATE_POSTS, GET_BY_ID } from '../type';
 import { uploadFile } from '../../helpers';
 
 const URL = process.env.REACT_APP_BACK_END_URL;
@@ -50,6 +50,19 @@ export const createPosts = (params = {}, file = {}) => {
         type: ERROR_POSTS,
         payload: error.response.data.errors.errors
       });
+    }
+  };
+};
+
+export const getPostsById = id => {
+  return async dispatch => {
+    try {
+      const { data } = await axios.get(`${URL}/v1/posts/${id}`, {
+        headers: { Authorization: `Beare ${token}` }
+      });
+      dispatch({ type: GET_BY_ID, payload: data });
+    } catch (error) {
+      dispatch({ type: ERROR_POSTS, payload: error });
     }
   };
 };

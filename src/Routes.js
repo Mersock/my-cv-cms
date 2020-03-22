@@ -1,16 +1,17 @@
-import React from "react";
-import { Switch, Redirect } from "react-router-dom";
+import React from 'react';
+import { Switch, Redirect } from 'react-router-dom';
 
-import { PublicRoute, PrivateRoute } from "./components";
-import { Main as MainLayout, Minimal as MinimalLayout } from "./layouts";
+import { PublicRoute, PrivateRoute } from './components';
+import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
 import {
   Dashboard as DashboardView,
   NotFound as NotFoundView,
   SignIn as SignInView,
   PostsList as PostsView,
-  PostsCreate
-} from "./views";
+  PostsCreate,
+  PostsEdit
+} from './views';
 
 const Routes = () => {
   return (
@@ -39,6 +40,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/posts/create"
+      />
+      <PrivateRoute
+        component={PostsEdit}
+        exact
+        layout={MainLayout}
+        path="/posts/:id/edit"
       />
       <PublicRoute
         component={NotFoundView}

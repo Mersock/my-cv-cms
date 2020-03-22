@@ -15,6 +15,8 @@ import {
   TableRow,
   TablePagination
 } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getPosts } from '../../../../actions/Posts';
 import { substrWithTags } from '../../../../helpers';
@@ -92,6 +94,7 @@ const PostsTable = props => {
                   <TableCell>Body</TableCell>
                   <TableCell>Slug</TableCell>
                   <TableCell>Create date</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -113,6 +116,13 @@ const PostsTable = props => {
                       <TableCell>{post.slug}</TableCell>
                       <TableCell>
                         {moment(post.createdAt).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/posts/${post.id}/edit`}>
+                          <Button color="primary" variant="contained">
+                            Edit
+                          </Button>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}
