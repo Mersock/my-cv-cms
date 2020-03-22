@@ -123,6 +123,10 @@ const PostsTable = props => {
                             Edit
                           </Button>
                         </Link>
+                        {` `}
+                        <Button color="secondary" variant="contained">
+                          Delete
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
