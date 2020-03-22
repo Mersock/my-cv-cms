@@ -75,10 +75,9 @@ const schema = {
 };
 
 const Form = props => {
-  const { history, eventPosts, className, ...rest } = props;
+  const { history, cardHeader, eventPosts, className, ...rest } = props;
 
   const classes = useStyles();
-
   const dispatch = useDispatch();
 
   const [formState, setFormState] = useState({
@@ -88,9 +87,13 @@ const Form = props => {
     errors: {}
   });
 
-  const propPosts = useSelector(state => state.posts);
-  const [posts, setPosts] = useState({});
+  const posts = useSelector(state => state.posts);
   const [apisError, setApisError] = useState('');
+  const [detail, setDetail] = useState({
+    slug: '',
+    title: '',
+    body: ''
+  });
 
   if (posts.create) {
     history.push('/posts');
@@ -105,14 +108,16 @@ const Form = props => {
       errors: errors || {}
     }));
 
-    setPosts(propPosts);
+    if (posts.detail) {
+      setDetail(posts.detail);
+    }
 
     if (posts.errors) {
       Object.keys(posts.errors).map(function(key, index) {
         setApisError(posts.errors[key][index]);
       });
     }
-  }, [formState.values, posts.errors, propPosts]);
+  }, [formState.values, posts.detail, posts.errors]);
 
   const handleChange = event => {
     event.persist();
@@ -155,7 +160,6 @@ const Form = props => {
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
-
   return (
     <div {...rest} className={clsx(classes.root, className)}>
       <Grid container spacing={3}>
@@ -170,7 +174,7 @@ const Form = props => {
           )}
           <form onSubmit={event => handleSubmit(event)}>
             <Paper className={classes.paperCenter}>
-              <CardHeader subheader="Create your posts" title="Posts" />
+              <CardHeader subheader={cardHeader} title="Posts" />
               <Divider />
               <label htmlFor="slug">
                 <TextField
@@ -190,7 +194,7 @@ const Form = props => {
                   onChange={handleChange}
                   type="text"
                   name="slug"
-                  value={formState.values.slug || ''}
+                  value={formState.values.slug || detail.slug}
                   variant="outlined"
                 />
               </label>
@@ -212,7 +216,7 @@ const Form = props => {
                   onChange={handleChange}
                   type="text"
                   name="title"
-                  value={formState.values.title || ''}
+                  value={formState.values.title || detail.title}
                   variant="outlined"
                 />
               </label>

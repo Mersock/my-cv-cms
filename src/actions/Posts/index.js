@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { GET_POSTS, ERROR_POSTS, CREATE_POSTS, GET_BY_ID } from '../type';
+import {
+  GET_POSTS,
+  ERROR_POSTS,
+  CREATE_POSTS,
+  GET_BY_ID,
+  UPDATE_POSTS
+} from '../type';
 import { uploadFile } from '../../helpers';
 
 const URL = process.env.REACT_APP_BACK_END_URL;
@@ -44,7 +50,7 @@ export const createPosts = (params = {}, file = {}) => {
           }
         });
       }
-      dispatch({ type: CREATE_POSTS, payload: data });
+      dispatch({ type: CREATE_POSTS, payload: data.data });
     } catch (error) {
       dispatch({
         type: ERROR_POSTS,
@@ -58,11 +64,45 @@ export const getPostsById = id => {
   return async dispatch => {
     try {
       const { data } = await axios.get(`${URL}/v1/posts/${id}`, {
-        headers: { Authorization: `Beare ${token}` }
+        headers: {
+          Authorization: `Beare ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
-      dispatch({ type: GET_BY_ID, payload: data });
+      dispatch({ type: GET_BY_ID, payload: data.data });
     } catch (error) {
       dispatch({ type: ERROR_POSTS, payload: error });
+    }
+  };
+};
+
+export const updatePosts = (params = {}, file = {}, postId) => {
+  return async dispatch => {
+    try {
+      const { id } = JSON.parse(user);
+      params.author = id;
+      const { data } = await axios.patch(`${URL}/v1/posts/${postId}`, params, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Beare ${token}`
+        }
+      });
+      if (file) {
+        const fileData = await uploadFile(file);
+        params.imagesUrl = fileData.data.imagesPath;
+        axios.patch(`${URL}/v1/posts/${postId}`, params, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Beare ${token}`
+          }
+        });
+      }
+      dispatch({ type: UPDATE_POSTS, payload: data.data });
+    } catch (error) {
+      dispatch({
+        type: ERROR_POSTS,
+        payload: error.response.data.errors.errors
+      });
     }
   };
 };

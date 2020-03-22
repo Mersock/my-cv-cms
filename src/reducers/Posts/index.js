@@ -2,7 +2,8 @@ import {
   GET_POSTS,
   CREATE_POSTS,
   ERROR_POSTS,
-  GET_BY_ID
+  GET_BY_ID,
+  UPDATE_POSTS
 } from '../../actions/type';
 
 const initailState = {
@@ -24,6 +25,11 @@ export default (state = initailState, action) => {
         create: action.payload
       };
     case GET_BY_ID:
+      return {
+        ...state,
+        detail: action.payload
+      };
+    case UPDATE_POSTS:
       return {
         ...state,
         detail: action.payload

@@ -16,7 +16,11 @@ const PostsCreate = props => {
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item md={12} xs={12}>
-          <Form eventPosts={createPosts} history={props.history} />
+          <Form
+            eventPosts={createPosts}
+            history={props.history}
+            cardHeader={`Create Posts`}
+          />
         </Grid>
       </Grid>
     </div>
