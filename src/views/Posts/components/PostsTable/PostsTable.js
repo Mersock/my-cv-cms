@@ -15,8 +15,11 @@ import {
   TableRow,
   TablePagination
 } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getPosts } from '../../../../actions/Posts';
+import { getPosts, deletePosts } from '../../../../actions/Posts';
+import { substrWithTags } from '../../../../helpers';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -66,6 +69,11 @@ const PostsTable = props => {
     setRowsPerPage(event.target.value);
   };
 
+  const handleDeletePosts = async id => {
+    await dispatch(deletePosts(id));
+    await dispatch(getPosts({ page, limit: rowsPerPage }));
+  };
+
   useEffect(() => {
     setCount(posts.meta.dataTotal || count);
     setPage(posts.meta.currentPage || page);
@@ -91,6 +99,7 @@ const PostsTable = props => {
                   <TableCell>Body</TableCell>
                   <TableCell>Slug</TableCell>
                   <TableCell>Create date</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -102,10 +111,31 @@ const PostsTable = props => {
                           {post.title}
                         </div>
                       </TableCell>
-                      <TableCell>{post.body}</TableCell>
+                      <TableCell>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: substrWithTags(post.body, 200)
+                          }}
+                        />
+                      </TableCell>
                       <TableCell>{post.slug}</TableCell>
                       <TableCell>
                         {moment(post.createdAt).format('DD/MM/YYYY')}
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/posts/${post.id}/edit`}>
+                          <Button color="primary" variant="contained">
+                            Edit
+                          </Button>
+                        </Link>
+                        {` `}
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={() => handleDeletePosts(post.id)}
+                        >
+                          Delete
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
