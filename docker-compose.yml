@@ -13,6 +13,7 @@ services:
     networks:
       - my-cv-services
     command: ['npm', 'start']
+    stdin_open: true
 
 networks:
   my-cv-services:
